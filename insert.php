@@ -23,7 +23,7 @@ if(isset($_POST['submit'])) {
 
     // Ilocalnsert data into the database including image
     $insert = $pdo->prepare("INSERT INTO users (name, email, pass, profile_image) VALUES (:name, :email, :pass, :profile_image)");
-    var_dump($profileImage);
+    
     $insert->execute([
         'name' => $name,
         'email' => $email,

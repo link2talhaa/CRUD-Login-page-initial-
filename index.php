@@ -41,11 +41,22 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
         cursor: pointer;
     ">Logout</button>
 </form>
+<form method="POST" action="categories/view.php" style="text-align:right;">
+    <button type="submit" style="
+        background-color:rgb(52, 56, 255);
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    ">categories</button>
+</form>
+
 
 <h2>All Users</h2>
 <table border="1" cellpadding="10">
   <tr>
-    <th>ID</th><th>Name</th><th>Email</th><th>Password</th><th>Actions</th>
+    <th>ID</th><th>Name</th><th>Email</th><th>Password</th><th>Images</th><th>Actions</th>
   </tr>
   <?php foreach ($users as $user): ?>
     <tr>

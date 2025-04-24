@@ -1,13 +1,13 @@
-session_start();
-if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
-    exit;
-}
+
 <?php
 // Include connection
 include "connection.php";
 session_start();
 
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
 // Check if ID is valid
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     die("Invalid ID");
