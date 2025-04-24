@@ -1,4 +1,6 @@
-
+<?php
+session_start();
+?>
 
 <!doctype html>
 <html lang="en">
@@ -11,6 +13,16 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body class="p-3 m-0 border-0 bd-example m-0 border-0">
+
+  
+    <!-- ✅ Success Alert -->
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success">
+            <?= $_SESSION['success']; ?>
+        </div>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+
     <!-- Example Code Start-->
      <form action="insert.php" enctype="multipart/form-data" method="POST">
     <div class="mb-3  row" style="width: 300px;">
@@ -37,10 +49,12 @@
           <input type="file"  name="profile_image" class="form-control " >
         </div>
        </div> 
-      <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" name="submit" class="btn btn-primary">Register</button>
     <!-- Example Code End -->
     </form>
  
+  
+
  
   </body>
 </html>

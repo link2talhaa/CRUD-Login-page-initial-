@@ -1,49 +1,63 @@
-
-<?php
-// Include the database connection file
-include "connection.php";
 session_start();
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit;
 }
-// Check if an ID is passed in the query string
+<?php
+// Include connection
+include "connection.php";
+session_start();
+
+// Check if ID is valid
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     die("Invalid ID");
 }
-
-// Get the user ID from the URL
 $userId = $_GET['id'];
 
-// Fetch the user data from the database
+// Fetch current user data
 $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
 $stmt->execute(['id' => $userId]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Check if the user exists
 if (!$user) {
     die("User not found");
 }
 
-// Handle the form submission to update the user data
+// Handle form submission
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $pass = $_POST['pass'];
+    $profileImage = $user['profile_image']; // Default to old image
 
-    // Update the user data in the database
-    $update = $pdo->prepare("UPDATE users SET name = :name, email = :email, pass = :pass WHERE id = :id");
+    // Check if a new image was uploaded
+    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
+        $imageTmpPath = $_FILES['profile_image']['tmp_name'];
+        $imageName = basename($_FILES['profile_image']['name']);
+        $uploadDir = 'uploads/';
+        $destination = $uploadDir . $imageName;
+
+        if (move_uploaded_file($imageTmpPath, $destination)) {
+            $profileImage = $destination;
+        }
+    }
+
+    // Update user info including image
+    $update = $pdo->prepare("UPDATE users SET name = :name, email = :email, pass = :pass, profile_image = :profile_image WHERE id = :id");
     $update->execute([
         'name' => $name,
         'email' => $email,
         'pass' => $pass,
+        'profile_image' => $profileImage,
         'id' => $userId
     ]);
 
-    // Redirect to the view page after successful update
     header("Location: index.php");
     exit;
 }
+?>
+
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +72,8 @@ if (isset($_POST['submit'])) {
 <body class="p-3 m-0 border-0 bd-example m-0 border-0">
     <div class="container">
         <h2>Edit User</h2>
-        <form action="edit.php?id=<?= $user['id'] ?>" method="POST">
+        <form action="edit.php?id=<?= $user['id'] ?>" method="POST" enctype="multipart/form-data">
+
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" name="name" id="name" value="<?= htmlspecialchars($user['Name']) ?>" required>
@@ -71,6 +86,15 @@ if (isset($_POST['submit'])) {
                 <label for="pass" class="form-label">Password</label>
                 <input type="password" class="form-control" name="pass" id="pass" value="<?= htmlspecialchars($user['pass']) ?>" required>
             </div>
+
+            <label>Current Image:</label><br>
+            <?php if ($user['profile_image']): ?>
+                <img src="<?= $user['profile_image'] ?>" width="100"><br>
+            <?php endif; ?>
+            
+            <label>Change Image:</label>
+            <input type="file" name="profile_image"><br><br>
+
             <button type="submit" name="submit" class="btn btn-primary">Update User</button>
         </form>
     </div>

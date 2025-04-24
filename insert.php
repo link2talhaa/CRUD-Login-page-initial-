@@ -1,6 +1,7 @@
 <?php
+session_start(); 
+ $success = false;
 include "connection.php";
-
 if(isset($_POST['submit'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -20,7 +21,7 @@ if(isset($_POST['submit'])) {
         }
     }
 
-    // Insert data into the database including image
+    // Ilocalnsert data into the database including image
     $insert = $pdo->prepare("INSERT INTO users (name, email, pass, profile_image) VALUES (:name, :email, :pass, :profile_image)");
     var_dump($profileImage);
     $insert->execute([
@@ -29,8 +30,11 @@ if(isset($_POST['submit'])) {
         'pass' => $pass,
         'profile_image' => $profileImage
     ]);
-       
-    header("Location: index.php");
-    exit;
+    // ✅ Set flash success message
+    $_SESSION['success'] = "🎉 Registration successful! <a href='login.php'>Click here to login</a>.";
+
+    // ✅ Redirect back to form
+    header("Location: form.php");
+    exit;  
 }
 ?>
