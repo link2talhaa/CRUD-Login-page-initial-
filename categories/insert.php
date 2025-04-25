@@ -1,6 +1,6 @@
 <?php
 include "connection.php";
-
+include "check_login.php";
 
 if(isset($_POST['submit'])) {
     try {

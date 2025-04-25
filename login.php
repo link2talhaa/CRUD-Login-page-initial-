@@ -1,26 +1,37 @@
 <?php
 session_start(); // Start the session
 include "connection.php";
+
+// Redirect if already logged in
 if (isset($_SESSION['user'])) {
-    header("Location: index.php");
+    if ($_SESSION['user']['role'] === 'admin') {
+        header("Location: index.php");
+    } else {
+        header("Location: user_dashboard.php");
+    }
     exit;
 }
+
 // If form is submitted
 if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $pass = $_POST['pass'];
 
-    // Check if email and password match in the DB
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE Email = :email AND pass = :pass");
-    $stmt->execute([
-        'email' => $email,
-        'pass' => $pass
-    ]);
+    // Fetch user by email
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE Email = :email");
+    $stmt->execute(['email' => $email]);
     $user = $stmt->fetch();
-    print_r($user);
-    if ($user) {
+
+    // Check user and verify password
+    if ($user && $user['pass'] === $pass) { // You should replace this with password_verify() for hashed passwords
         $_SESSION['user'] = $user;
-        header("Location: index.php");
+
+        // Redirect based on role
+        if ($user['role'] === 'admin') {
+            header("Location: index.php");
+        } else {
+            header("Location: user_dashboard.php");
+        }
         exit;
     } else {
         $error = "Invalid email or password!";
@@ -41,4 +52,4 @@ if (isset($_POST['login'])) {
     <button type="submit" name="login">Login</button>
 </form>
 
-<p>Not registered yet? <a href="form.php">Register here</a></p>
+<p>Not registered yet? <a href="Regform.php">Register here</a></p>

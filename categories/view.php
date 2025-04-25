@@ -1,7 +1,6 @@
 <?php
 include "connection.php";
-
-
+include "check_login.php";
 // Fetch all categories
 $stmt = $pdo->query("SELECT * FROM categories");
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -1,7 +1,10 @@
 <?php
 include "connection.php";
+include "check_login.php";
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
+
 
 if (!isset($_GET['id'])) {
     die("No ID provided.");

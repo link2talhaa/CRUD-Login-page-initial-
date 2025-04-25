@@ -2,7 +2,7 @@
 // form.php
 
 include "connection.php";
-
+include "check_login.php"; // Ensure user is logged in
 // Fetch users from database
 $users = $pdo->query("SELECT id, name FROM users")->fetchAll(PDO::FETCH_ASSOC);
 ?>

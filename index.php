@@ -1,14 +1,20 @@
-<form method="GET" action="" style="margin-bottom: 20px;">
-    <input type="text" name="search" placeholder="Search by name - email - ID" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
-    <button type="submit">Search</button>
-</form>
 <?php
 session_start();
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit;
 }
+
+if ($_SESSION['user']['role'] !== 'admin') {
+  die("Access denied.");
+}
+
 ?>
+
+<form method="GET" action="" style="margin-bottom: 20px;">
+    <input type="text" name="search" placeholder="Search by name - email - ID" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+    <button type="submit">Search</button>
+</form>
 
 <?php
 include "connection.php";
