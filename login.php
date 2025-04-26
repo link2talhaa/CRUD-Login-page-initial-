@@ -38,11 +38,24 @@ if (isset($_POST['login'])) {
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    
 
-<h2>Login</h2>
+<div style="margin: 0 auto; margin-right:650px; width: 300px; padding-top: 50px;" >
+    
+<h2 class="position-relative top-0 start-50 ">Login</h2>
 <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
 
-<form method="POST" action="">
+<form class="position-relative top-0 start-50" method="POST" action="">
     <label>Email:</label><br>
     <input type="email" name="email" required><br><br>
 
@@ -52,4 +65,7 @@ if (isset($_POST['login'])) {
     <button type="submit" name="login">Login</button>
 </form>
 
-<p>Not registered yet? <a href="Regform.php">Register here</a></p>
+<p class="position-relative top-0 start-50">Not registered yet? <a href="Regform.php">Register here</a></p>
+</div>
+</body>
+</html>

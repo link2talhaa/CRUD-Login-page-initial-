@@ -5,7 +5,8 @@ include "connection.php";
 if(isset($_POST['submit'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $pass = $_POST['pass'];
+    // ✅ Hash the password securely
+    $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 
     // Handle image upload
     $profileImage = null;
@@ -23,18 +24,18 @@ if(isset($_POST['submit'])) {
 
     // Ilocalnsert data into the database including image
     $insert = $pdo->prepare("INSERT INTO users (name, email, pass, profile_image) VALUES (:name, :email, :pass, :profile_image)");
-    
-    $insert->execute([
+     $insert->execute([
         'name' => $name,
         'email' => $email,
         'pass' => $pass,
         'profile_image' => $profileImage
     ]);
+    
     // ✅ Set flash success message
     $_SESSION['success'] = "🎉 Registration successful! <a href='login.php'>Click here to login</a>.";
 
     // ✅ Redirect back to form
-    header("Location: form.php");
+    header("Location: Regform.php");
     exit;  
 }
 ?>

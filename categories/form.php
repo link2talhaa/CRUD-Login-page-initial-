@@ -1,47 +1,59 @@
 <?php
-// form.php
-
+session_start();
 include "connection.php";
-include "check_login.php"; // Ensure user is logged in
-// Fetch users from database
-$users = $pdo->query("SELECT id, name FROM users")->fetchAll(PDO::FETCH_ASSOC);
+
+if (!isset($_SESSION['user'])) {
+    header("Location: ../login.php");
+    exit;
+}
+
+$success = '';
+
+if (isset($_POST['submit'])) {
+    $user_id = $_SESSION['user']['id'];
+    $name = ucfirst(trim($_POST['name'])); // Make first letter capital, trim spaces
+
+    if (!empty($name)) {
+        $insert = $pdo->prepare("INSERT INTO categories (user_id, name) VALUES (?, ?)");
+        $insert->execute([$user_id, $name]);
+        $success = "Category added successfully!";
+    } else {
+        $success = "Please enter a category name!";
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-  <title>Insert Form</title>
+    <meta charset="UTF-8">
+    <title>Add Category</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 
-<form action="insert.php" method="post" class="container mt-5">
-  <div class="mb-3">
-    <label for="id" class="form-label">ID</label>
-    <input type="number" class="form-control" name="id" id="id">
-  </div>
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="mb-4 text-center">Add New Category</h2>
 
-  <div class="mb-3">
-    <label for="user_id" class="form-label">User</label>
-    <select name="user_id" id="user_id" class="form-select" required>
-      <option value="">-- Select User --</option>
-      <?php foreach($users as $user): ?>
-        <option value="<?= htmlspecialchars($user['id']) ?>">
-          <?= htmlspecialchars($user['name']) ?> (ID: <?= $user['id'] ?>)
-        </option>
-      <?php endforeach; ?>
-    </select>
-  </div>
+        <?php if ($success): ?>
+            <div class="alert alert-info"><?= htmlspecialchars($success) ?></div>
+        <?php endif; ?>
 
-  <div class="mb-3">
-    <label for="name" class="form-label"> Name</label>
-    <input type="text" class="form-control" name="name" id="name" required>
-  </div>
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Category Name</label>
+                <input type="text" name="name" class="form-control" placeholder="Enter category name" required>
+            </div>
 
-  <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-</form>
+            <button type="submit" name="submit" class="btn btn-primary w-100">Add Category</button>
+        </form>
+
+        <div class="mt-3 text-center">
+            <a href="view.php" class="btn btn-secondary btn-sm">View My Categories</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

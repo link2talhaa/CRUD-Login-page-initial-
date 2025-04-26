@@ -36,7 +36,19 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 // search code end 
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <title></title>
+</head>
+<body>
+  
 
+<div class>
 <form method="POST" action="logout.php" style="text-align:right;">
     <button type="submit" style="
         background-color: #dc3545;
@@ -47,7 +59,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
         cursor: pointer;
     ">Logout</button>
 </form>
-<form method="POST" action="categories/view.php" style="text-align:right;">
+<form method="POST" action="admin_category.php" style="text-align:right;">
     <button type="submit" style="
         background-color:rgb(52, 56, 255);
         color: white;
@@ -57,7 +69,7 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
         cursor: pointer;
     ">categories</button>
 </form>
-
+</div>
 
 <h2>All Users</h2>
 <table border="1" cellpadding="10">
@@ -102,3 +114,5 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
         </button>
     </form>
 </div>
+</body>
+</html>
