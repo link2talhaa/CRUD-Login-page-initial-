@@ -83,7 +83,7 @@ if(isset($_POST['submit'])) {
         <div class="col-sm-10">
           <input type="file"  name="profile_image" class="form-control " >
         </div>
-       </div> 
+      </div> 
       <button type="submit" name="submit" class="btn btn-primary">Submit</button>
     <!-- Example Code End -->
     </form>
